@@ -107,9 +107,19 @@ fullDeck = cardsToHand Empty allCards
   where cardsToHand :: Hand -> [Card] -> Hand
         cardsToHand acc [] = acc
         cardsToHand acc (card:restOfCards) = cardsToHand (Add card acc) restOfCards
+
 -- B3 -------------------------------------------------------------------------
 
 --      Deck    Hand    (Deck, Hand)
 draw :: Hand -> Hand -> (Hand, Hand)
 draw Empty _ = error "draw: The deck is empty"
 draw (Add deckCard deck) hand = (deck, Add deckCard hand)
+
+-- B4 -------------------------------------------------------------------------
+
+playBank :: Hand -> Hand
+playBank deck = playBankHelper deck Empty
+
+playBankHelper :: Hand -> Hand -> Hand
+playBankHelper (Add deckCard deck) hand | value hand < 16 = playBankHelper deck (Add deckCard hand)
+                                        | otherwise       = hand
