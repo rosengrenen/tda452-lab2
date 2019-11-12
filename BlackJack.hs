@@ -1,5 +1,6 @@
 module BlackJack where
 import Cards
+import System.Random
 import RunGame
 import Test.QuickCheck
 
@@ -123,3 +124,31 @@ playBank deck = playBankHelper deck Empty
 playBankHelper :: Hand -> Hand -> Hand
 playBankHelper (Add deckCard deck) hand | value hand < 16 = playBankHelper deck (Add deckCard hand)
                                         | otherwise       = hand
+
+-- B5 -------------------------------------------------------------------------
+
+removeCard :: Hand -> Integer -> (Card, Hand)
+removeCard Empty _                            = error "removeCard error: Empty hand"
+removeCard (Add card deck) index | index == 0 = (card, deck)
+removeCard (Add card deck) index              = (removedCard, (Add card restOfDeck))
+  where (removedCard, restOfDeck) = removeCard deck (index - 1)
+
+shuffleDeckAcc :: StdGen -> Hand -> Hand -> Hand
+shuffleDeckAcc _ acc Empty = acc
+shuffleDeckAcc g1 acc deck = shuffleDeckAcc g2 (Add card acc) newDeck
+  where (randomVal, g2) = randomR (0, size deck - 1) g1
+        (card, newDeck) = removeCard deck randomVal
+
+shuffleDeck :: StdGen -> Hand -> Hand
+shuffleDeck g deck = shuffleDeckAcc g Empty deck
+
+belongsTo :: Card -> Hand -> Bool
+c `belongsTo` Empty = False
+c `belongsTo` (Add c' h) = c == c' || c `belongsTo` h
+
+prop_shuffle_sameCards :: StdGen -> Card -> Hand -> Bool
+prop_shuffle_sameCards g c h =
+    c `belongsTo` h == c `belongsTo` shuffleDeck g h
+
+prop_size_shuffle :: StdGen -> Hand -> Bool
+prop_size_shuffle g hand = size hand == size (shuffleDeck g hand)
