@@ -95,3 +95,15 @@ prop_onTopOf_assoc p1 p2 p3 =
 
 prop_size_onTopOf :: Hand -> Hand -> Bool
 prop_size_onTopOf leftHand rightHand = size leftHand + size rightHand == size (leftHand <+ rightHand)
+
+-- B2 -------------------------------------------------------------------------
+
+ranks = [Numeric n | n <- [2..10]] ++ [Jack, Queen, King, Ace]
+suits = [Hearts, Spades, Diamonds, Clubs]
+allCards = [Card rank suit | rank <- ranks, suit <- suits]
+
+fullDeck :: Hand
+fullDeck = cardsToHand Empty allCards
+  where cardsToHand :: Hand -> [Card] -> Hand
+        cardsToHand acc [] = acc
+        cardsToHand acc (card:restOfCards) = cardsToHand (Add card acc) restOfCards
