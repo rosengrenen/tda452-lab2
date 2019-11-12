@@ -75,20 +75,9 @@ winner guest bank | value guest > value bank = Guest
 
 -- B1 -------------------------------------------------------------------------
 
-h1 = Add (Card (Numeric 1) Hearts) (Add (Card (Numeric 2) Hearts) (Add (Card (Numeric 3) Hearts) Empty))
-h2 = Add (Card (Numeric 4) Hearts) (Add (Card (Numeric 5) Hearts) (Add (Card (Numeric 6) Hearts) Empty))
-h3 = Add (Card (Numeric 7) Hearts) (Add (Card (Numeric 8) Hearts) (Add (Card (Numeric 9) Hearts) Empty))
-
-reverseHand :: Hand -> Hand
-reverseHand hand = rev Empty hand
-  where rev acc Empty           = acc
-        rev acc (Add card hand) = rev (Add card acc) hand
-
 (<+) :: Hand -> Hand -> Hand
 (<+) Empty hand = hand
-(<+) leftHand rightHand = (reverseHand leftHand) `concatenateHands` rightHand
-  where concatenateHands Empty rightHand                   = rightHand
-        concatenateHands (Add leftCard leftHand) rightHand = leftHand `concatenateHands` (Add leftCard rightHand)
+(<+) (Add card leftHand) rightHand = Add card (leftHand <+ rightHand)
 
 prop_onTopOf_assoc :: Hand -> Hand -> Hand -> Bool
 prop_onTopOf_assoc p1 p2 p3 =
