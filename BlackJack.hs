@@ -70,8 +70,8 @@ gameOver hand = value hand > 21
 
 winner :: Hand -> Hand -> Player
 winner guest _    | gameOver guest == True = Bank
-winner guest bank | value guest > value bank = Guest
 winner _ bank     | gameOver bank == True = Guest
+winner guest bank | value guest > value bank = Guest
                   | otherwise                = Bank
 
 -- B1 -------------------------------------------------------------------------
