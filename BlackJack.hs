@@ -118,7 +118,7 @@ playBankHelper (Add deckCard deck) hand | value hand < 16 = playBankHelper deck 
 
 removeCard :: Hand -> Integer -> (Card, Hand)
 removeCard Empty _                            = error "removeCard error: Empty hand"
-removeCard (Add card deck) index | index == 0 = (card, deck)
+removeCard (Add card deck) 0                  = (card, deck)
 removeCard (Add card deck) index              = (removedCard, (Add card restOfDeck))
   where (removedCard, restOfDeck) = removeCard deck (index - 1)
 
