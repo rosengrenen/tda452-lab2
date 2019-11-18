@@ -19,21 +19,8 @@ sizeSteps = [ size hand2
 
 -- A1 -------------------------------------------------------------------------
 
-displayRank :: Rank -> String
-displayRank (Numeric n) = show n
-displayRank Jack = "Jack"
-displayRank Queen = "Queen"
-displayRank King = "King"
-displayRank Ace = "Ace"
-
-displaySuit :: Suit -> String
-displaySuit Hearts = "Hearts"
-displaySuit Spades = "Spades"
-displaySuit Diamonds = "Diamonds"
-displaySuit Clubs = "Clubs"
-
 displayCard :: Card -> String
-displayCard (Card rank suit) = (displayRank rank) ++ " of " ++ (displaySuit suit)
+displayCard (Card rank suit) = (show rank) ++ " of " ++ (show suit)
 
 display :: Hand -> String
 display Empty = ""
