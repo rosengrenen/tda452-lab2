@@ -20,6 +20,7 @@ sizeSteps = [ size hand2
 -- A1 -------------------------------------------------------------------------
 
 displayCard :: Card -> String
+displayCard (Card (Numeric n) suit) = (show n) ++ " of " ++ (show suit)
 displayCard (Card rank suit) = (show rank) ++ " of " ++ (show suit)
 
 display :: Hand -> String
